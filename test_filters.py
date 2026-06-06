@@ -18,11 +18,14 @@ CASES = [
     ("Need male roommate near Sarjapur road, 1BHK", True, "sarjapur + male"),
     ("Flatmate wanted in Bellandur, guys preferred", True, "bellandur + guys"),
 
-    # Gender-agnostic listings — should NOW pass (Option B)
-    ("1BHK semi-furnished for rent in HSR Sector 7, 22k", True, "gender-agnostic HSR rental"),
-    ("3BHK available in Koramangala, ₹40k, immediate move-in", True, "gender-agnostic koramangala"),
-    ("Brand new 2BHK flat for rent in HSR Layout, 25k", True, "gender-agnostic HSR flat"),
-    ("Studio for rent in Bellandur near RMZ Ecospace, 14k", True, "gender-agnostic studio"),
+    # Gender-agnostic listings under rent cap — should pass
+    ("Studio for rent in Bellandur near RMZ Ecospace, 14k", True, "gender-agnostic studio 14k"),
+    ("1BHK in HSR for rent, ₹15,000", True, "gender-agnostic HSR 15k"),
+    ("Single room in Koramangala, 12k", True, "gender-agnostic koramangala 12k"),
+    # Gender-agnostic listings over rent cap — should drop (rent filter)
+    ("1BHK semi-furnished for rent in HSR Sector 7, 22k", False, "22k over cap"),
+    ("3BHK available in Koramangala, ₹40k, immediate move-in", False, "40k over cap"),
+    ("Brand new 2BHK flat for rent in HSR Layout, 25k", False, "25k over cap"),
 
     # Female-only — must drop
     ("Female only flat in HSR, 15k", False, "female-only excluded"),
@@ -45,6 +48,31 @@ CASES = [
 
     # No location — must drop
     ("Looking for male flatmate, 12k budget anywhere", False, "no location mentioned"),
+
+    # Rent cap — under 16k passes
+    ("HSR PG for boys, 12k/month", True, "12k passes"),
+    ("1BHK in BTM, rent 15000", True, "15000 passes"),
+    ("Studio in Bellandur, ₹14,000", True, "14k passes"),
+    ("HSR room for male, 15.5k", True, "15.5k passes"),
+    ("Koramangala flat, Rs. 16,000", True, "16k passes (boundary)"),
+
+    # Rent cap — over 16k drops
+    ("HSR 2BHK for bachelors, 25k", False, "25k dropped"),
+    ("BTM 3BHK, rent ₹35,000 per month", False, "35k dropped"),
+    ("Bellandur 1BHK 20000/-", False, "20k dropped"),
+    ("Sarjapur 2BHK, 1.5L deposit, rent 22k", False, "22k rent dropped despite L deposit"),
+    ("Studio in Koramangala, 17k", False, "17k dropped"),
+
+    # Range — should use minimum
+    ("HSR 1BHK & 2BHK, 12-18k", True, "range 12-18k uses 12k min, passes"),
+    ("Bellandur 2-3BHK, 22-30k", False, "range 22-30k uses 22k min, drops"),
+
+    # No rent mentioned — should still pass (don't lose legit posts)
+    ("Need a flatmate in HSR, DM for details", True, "no rent passes"),
+
+    # Numbers that look like rent but aren't (sector, sq ft) — should not break
+    ("HSR Sector 7 1BHK, 850 sqft, 13k", True, "13k correctly identified, sector not"),
+    ("HSR Layout 27th main, ₹12,000", True, "12k correctly identified, main road not"),
 ]
 
 
