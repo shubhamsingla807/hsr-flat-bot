@@ -8,7 +8,18 @@ TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
 FB_GROUP_URLS = [u.strip() for u in os.environ.get("FB_GROUP_URLS", "").split(",") if u.strip()]
 
-SUBREDDITS = ["bangalore", "bangaloreflats", "HSR"]
+SUBREDDITS = ["bangalore", "bangaloreflats", "HSR", "IndianFlatmates", "IndianRoommates", "BangaloreHousing"]
+
+# Cross-sub keyword searches via Reddit RSS — catches HSR posts in any subreddit
+REDDIT_SEARCHES = [
+    "hsr flatmate",
+    "hsr male",
+    "hsr bachelor",
+    "koramangala flatmate male",
+    "btm flatmate male",
+    "sarjapur flatmate male",
+    "bellandur flatmate male",
+]
 
 DATA_DIR = "data"
 COOKIES_PATH = f"{DATA_DIR}/cookies.json"

@@ -20,7 +20,7 @@ log = logging.getLogger("hsr-bot")
 
 def fetch_all() -> List[Post]:
     jobs = {
-        "reddit": lambda: reddit.fetch(config.SUBREDDITS),
+        "reddit": lambda: reddit.fetch(config.SUBREDDITS, searches=config.REDDIT_SEARCHES),
         "fb": lambda: facebook.fetch(config.FB_GROUP_URLS, config.COOKIES_PATH),
     }
     posts: List[Post] = []
