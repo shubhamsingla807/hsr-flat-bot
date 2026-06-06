@@ -1,0 +1,4 @@
+httpx==0.27.2
+feedparser==6.0.11
+playwright==1.60.0
+python-dotenv==1.0.1
