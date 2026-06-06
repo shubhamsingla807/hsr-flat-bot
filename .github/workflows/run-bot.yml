@@ -1,0 +1,58 @@
+name: run-bot
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"   # every 30 min (GitHub adds 5–15 min jitter)
+  workflow_dispatch:           # allow manual "Run workflow" button
+
+# Prevent overlapping runs (in case one tick is slow)
+concurrency:
+  group: run-bot
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write          # so the workflow can commit seen.json back
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install deps
+        run: |
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
+
+      - name: Restore FB cookies from secret
+        run: |
+          mkdir -p data
+          echo "$FB_COOKIES_JSON" > data/cookies.json
+        env:
+          FB_COOKIES_JSON: ${{ secrets.FB_COOKIES_JSON }}
+
+      - name: Run bot
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          FB_GROUP_URLS: ${{ secrets.FB_GROUP_URLS }}
+          LOG_LEVEL: INFO
+        run: python main.py
+
+      - name: Commit updated seen.json
+        run: |
+          if ! git diff --quiet data/seen.json; then
+            git config user.name "hsr-flat-bot"
+            git config user.email "bot@hsr-flat-bot.local"
+            git add data/seen.json
+            git commit -m "chore: update seen.json [skip ci]"
+            git push
+          fi
