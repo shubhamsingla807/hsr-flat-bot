@@ -73,6 +73,16 @@ CASES = [
     # Numbers that look like rent but aren't (sector, sq ft) — should not break
     ("HSR Sector 7 1BHK, 850 sqft, 13k", True, "13k correctly identified, sector not"),
     ("HSR Layout 27th main, ₹12,000", True, "12k correctly identified, main road not"),
+
+    # Domestic services — must drop (real post saw via user)
+    ("Part time full time live nanny maid cook available in Bangalore HSR Delhi", False, "maid/cook/nanny dropped"),
+    ("Cook available for HSR Layout, ₹8000/month", False, "cook dropped"),
+    ("Maid services in BTM, deep cleaning", False, "maid/cleaning dropped"),
+    ("Tiffin service from HSR, ₹3000/month", False, "tiffin dropped"),
+    ("Driver available HSR Layout area", False, "driver dropped"),
+    ("Tuition for kids in Koramangala, 5k/month", False, "tuition dropped"),
+    ("Movers and packers HSR Bangalore, low cost", False, "movers/packers dropped"),
+    ("Interior designer for HSR home, affordable", False, "interior dropped"),
 ]
 
 
