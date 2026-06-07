@@ -74,6 +74,23 @@ CASES = [
     ("HSR Sector 7 1BHK, 850 sqft, 13k", True, "13k correctly identified, sector not"),
     ("HSR Layout 27th main, ₹12,000", True, "12k correctly identified, main road not"),
 
+    # Female-targeted natural phrasings (real leaks user saw)
+    ("Looking for a Single Room for FEMALE Near HSR Layout 27th Main", False, "for female dropped"),
+    ("Female Flatmate Required – 1 Room Available in HSR 2BHK", False, "female flatmate dropped"),
+    ("Female Flatmate Replacement Needed - BTM 2nd stage", False, "female flatmate replacement dropped"),
+    ("I'm a female working professional looking for room in BTM Layout", False, "I'm a female dropped"),
+    ("My friend is looking for a shared female flat in Koramangala", False, "shared female dropped"),
+    ("Looking for female roommate in HSR Sector 7, ₹14000", False, "female roommate dropped"),
+    ("Girl looking for accommodation in HSR Layout", False, "girl looking for dropped"),
+    ("HSR Layout — Female PG available, ₹12000", False, "female PG dropped"),
+    ("Need a female flatmate, 2BHK Koramangala", False, "need a female dropped"),
+    ("Looking for 2 Female Flatmates in Harlur, 12k", False, "looking for 2 females (plural) dropped"),
+    ("Looking for 3 girls flatmates BTM Layout", False, "looking for 3 girls dropped"),
+    ("Single occupancy for female near BTM, 15k", False, "single occupancy female dropped"),
+    # Male-natural phrasings — must still pass
+    ("Looking for a male flatmate in HSR Sector 2, 15k", True, "male flatmate still passes"),
+    ("Need a male roommate near Bellandur, 14k", True, "male roommate still passes"),
+
     # Domestic services — must drop (real post saw via user)
     ("Part time full time live nanny maid cook available in Bangalore HSR Delhi", False, "maid/cook/nanny dropped"),
     ("Cook available for HSR Layout, ₹8000/month", False, "cook dropped"),

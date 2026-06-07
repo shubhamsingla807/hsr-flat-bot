@@ -34,7 +34,7 @@ GENDER_INCLUDE_PATTERNS = [
 
 # Drop posts that signal "not for you": female/girls-only, family-only, couples-only.
 EXCLUSION_PATTERNS = [
-    # Female-only
+    # Female-targeted listings (explicit "only" or natural phrasings)
     r"female only",
     r"females only",
     r"only females",
@@ -50,6 +50,31 @@ EXCLUSION_PATTERNS = [
     r"\bfor ladies\b",
     r"\bworking women\b",
     r"\bworking woman\b",
+    # "female flatmate" / "female roommate" / "girl flatmate" etc.
+    r"\bfemale\s+(?:flatmates?|flat\s*mates?|roommates?|room\s*mates?|tenants?|occupants?|residents?|professional|working)\b",
+    r"\b(?:flatmate|flat\s*mate|roommate|room\s*mate|tenant|occupant)\s+\(?female\)?\b",
+    r"\bgirl\s+(?:flatmate|flat\s*mate|roommate|room\s*mate|tenant)\b",
+    r"\b(?:flatmate|flat\s*mate|roommate|room\s*mate|tenant)\s+(?:girl|girls)\b",
+    # "for a female" / "looking for female" / "need female" / "single female"
+    r"\bfor\s+(?:a\s+)?female\b",
+    r"\blooking\s+for\s+(?:a\s+|\d+\s+)?(?:female|females|girl|girls|lady|ladies)\b",
+    r"\bneed(?:ed)?\s+(?:a\s+)?(?:female|girl|lady)\b",
+    r"\brequire(?:d|s)?\s+(?:a\s+)?(?:female|girl|lady)\b",
+    r"\bsingle\s+female\b",
+    r"\bsingle\s+occupancy\s+(?:for\s+)?female\b",
+    # "shared female flat" / "female PG"
+    r"\bshared\s+female\b",
+    r"\bfemale\s+(?:pg|p\.g\.|paying\s+guest|hostel|sharing|shared|stay)\b",
+    # "i am a female" / "i'm female" — poster is female (often asking for female-only)
+    r"\bi\s*['’]?\s*am\s+(?:a\s+)?female\b",
+    r"\bi\s*['’]?\s*m\s+(?:a\s+)?female\b",
+    r"\bmyself\s+(?:a\s+)?female\b",
+    # "girl looking" / "lady looking" — poster pronoun signal
+    r"\bgirl\s+looking\s+for\b",
+    r"\blady\s+looking\s+for\b",
+    # Plain "girls flat" / "girls PG" / "ladies PG"
+    r"\bgirls\s+(?:flat|pg|p\.g\.|paying\s+guest|hostel|sharing|stay|accommodation)\b",
+    r"\bladies\s+(?:pg|p\.g\.|paying\s+guest|hostel)\b",
     # Family/couples only
     r"family only",
     r"only family",
